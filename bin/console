@@ -15,7 +15,6 @@ end
 
 require 'netsweet'
 load 'config/netsweet.rb'
-load 'config/revolution_prep.rb'
 
 puts "Netsweet v#{Netsweet::VERSION} loaded in #{environment} mode."
 

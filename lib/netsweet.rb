@@ -22,5 +22,7 @@ module Netsweet
   def self.configure
     self.config ||= Config.new
     yield config
+
+    require_relative '../config/revolution_prep'
   end
 end
