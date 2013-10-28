@@ -16,6 +16,7 @@ module Netsweet
       :sandbox,
       :soap_password,
       :soap_username,
+      :sso_endpoint_url,
       :wsdl_url
     ]
 
