@@ -35,17 +35,15 @@ module Netsweet
       Customer.new(rvp_customer)
     end
 
-    def self.map_sso(customer)
-      Netsweet::SSO.mapsso(customer)
-    end
-
     def self.get(external_id)
       rvp_customer = NetSuite::Records::Customer.get(external_id: external_id)
-      if rvp_customer
-        Customer.new(rvp_customer)
-      else
-        raise "Customer Not Found!"
-      end
+      Customer.new(rvp_customer)
+    rescue NetSuite::RecordNotFound => ex
+      raise Netsweet::CustomerNotFound.new("Could not find Customer with external_id = #{external_id}")
+    end
+
+    def self.map_sso(customer)
+      Netsweet::SSO.mapsso(customer)
     end
 
   end

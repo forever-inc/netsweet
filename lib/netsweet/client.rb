@@ -12,7 +12,7 @@ module Netsweet
     end
 
     def cart_url(sso_auth_token)
-      "#{Config[:netsuite_host]}/pages/partners/singlesignon.jsp?pid=#{Config[:partner]}&pacct=#{Config[:company]}&a=#{sso_auth_token}"
+      "#{Netsweet.config.netsuite_host}/pages/partners/singlesignon.jsp?pid=#{Netsweet.config.partner}&pacct=#{Netsweet.config.company}&a=#{sso_auth_token}"
     end
 
   end

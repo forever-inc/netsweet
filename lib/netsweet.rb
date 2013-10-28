@@ -11,6 +11,9 @@ module Netsweet
   autoload :Customer, 'netsweet/customer.rb'
   autoload :SSO, 'netsweet/sso.rb'
 
+  # errors
+  autoload :CustomerNotFound, 'netsweet/errors.rb'
+
   class << self
     attr_accessor :config
   end
