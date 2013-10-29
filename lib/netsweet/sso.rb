@@ -13,7 +13,7 @@ module Netsweet
 
     def self.mapsso(customer)
       # Soap4R provides SsoCredentials, MapSsoRequest, and NetSuitePortType
-      hex_token = generate_auth_token(customer.id)
+      hex_token = generate_auth_token(customer)
       credentials = SsoCredentials.new(customer.email,
                                        rand_password,
                                        Netsweet.config.company,
