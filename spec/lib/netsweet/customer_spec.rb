@@ -6,6 +6,7 @@ describe Netsweet::Customer do
   Given(:external_id) { customer_attributes[:external_id] }
   Given(:customer_attributes) { { external_id: '1', entity_id: 'Alex Burkhart', email: 'alex@neo.com', first_name: 'Alex', last_name: 'Burkhart', is_person: true } }
 
+  before(:all)  { delete_customer(external_id) }
   after  { delete_customer(external_id) }
 
   context ".create" do
