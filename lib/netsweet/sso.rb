@@ -11,16 +11,11 @@ module Netsweet
       key_file.private_encrypt(token).unpack("H*")[0].upcase
     end
 
-    def self.mapsso(customer)
-      # Soap4R provides SsoCredentials, MapSsoRequest, and NetSuitePortType
+    # soap2r provides SsoCredentials, MapSsoRequest, and NetSuitePortType
+    def self.mapsso(customer, password)
       hex_token = generate_auth_token(customer)
-      credentials = SsoCredentials.new(customer.email,
-                                       rand_password,
-                                       Netsweet.config.company,
-                                       0, # not sure
-                                       hex_token,
-                                       Netsweet.config.company
-                                      )
+      # SsoCredentials.initialize(email = nil, password = nil, account = nil, role = nil, authenticationToken = nil, partnerId = nil)
+      credentials = SsoCredentials.new(customer.email, password, Netsweet.config.account, customer.access_role, hex_token, Netsweet.config.partner)
       request = MapSsoRequest.new
       request.ssoCredentials = credentials
       client = NetSuitePortType.new
@@ -28,10 +23,6 @@ module Netsweet
     end
 
     private
-
-    def self.rand_password
-      SecureRandom.urlsafe_base64
-    end
 
     def self.key_file
       @@key_file ||= OpenSSL::PKey::RSA.new(File.read(Netsweet.config.private_key_path), Netsweet.config.private_key_passphrase)

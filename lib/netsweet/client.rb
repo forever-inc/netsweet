@@ -11,9 +11,5 @@ module Netsweet
       connection.get_record(product.ns_type, product.ns_id)
     end
 
-    def cart_url(sso_auth_token)
-      "#{Netsweet.config.netsuite_host}/pages/partners/singlesignon.jsp?pid=#{Netsweet.config.partner}&pacct=#{Netsweet.config.company}&a=#{sso_auth_token}"
-    end
-
   end
 end

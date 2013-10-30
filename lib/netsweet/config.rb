@@ -5,6 +5,7 @@ module Netsweet
       :account,
       :api_version,
       :company,
+      :customer_access_role,
       :host,
       :partner,
       :private_key_passphrase,

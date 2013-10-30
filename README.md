@@ -33,9 +33,11 @@ REST_PASSWORD: secure_password
 SOAP_USERID: dev@your_company.com
 SOAP_PASSWORD: secure_password
 ROLE: 3
+CUSTOMER_ACCESS_ROLE: 1017
 
 HOST: https://system.sandbox.netsuite.com
 WSDL_HOST: https://webservices.sandbox.netsuite.com
+STORE_HOST: https://checkout.netsuite.com
 
 PRIVATE_KEY_PATH: ./key.pem
 PRIVATE_KEY_PASSPHRASE: secure_passphrase
