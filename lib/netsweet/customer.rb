@@ -14,8 +14,8 @@ module Netsweet
       Netsweet::SSO.generate_auth_token(self)
     end
 
-    def sso(password)
-      Netsweet::SSO.mapsso(self, password)
+    def map_sso(password)
+      Netsweet::SSO.map_sso(self, password)
     end
 
     def self.create(attrs = {})

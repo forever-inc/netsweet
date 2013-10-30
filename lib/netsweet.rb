@@ -14,6 +14,7 @@ module Netsweet
 
   # errors
   autoload :CustomerNotFound, 'netsweet/errors.rb'
+  autoload :MapSSOFailed, 'netsweet/errors.rb'
 
   class << self
     attr_accessor :config

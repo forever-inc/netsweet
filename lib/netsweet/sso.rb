@@ -12,7 +12,7 @@ module Netsweet
     end
 
     # soap2r provides SsoCredentials, MapSsoRequest, and NetSuitePortType
-    def self.mapsso(customer, password)
+    def self.map_sso(customer, password)
       hex_token = generate_auth_token(customer)
       # SsoCredentials.initialize(email = nil, password = nil, account = nil, role = nil, authenticationToken = nil, partnerId = nil)
       credentials = SsoCredentials.new(customer.email, password, Netsweet.config.account, customer.access_role, hex_token, Netsweet.config.partner)
@@ -20,6 +20,8 @@ module Netsweet
       request.ssoCredentials = credentials
       client = NetSuitePortType.new
       client.mapSso(request)
+    rescue SOAP::FaultError => ex
+      raise Netsweet::MapSSOFailed.new(ex.message)
     end
 
     private
