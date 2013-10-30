@@ -1,6 +1,6 @@
 require 'dotenv'
 
-environment = ARGV[0] || 'test'
+environment = 'test'
 env_path = Pathname.new(".env.#{environment}")
 
 if env_path.exist?
