@@ -22,6 +22,7 @@ Sample Configuration File:
 
 ```yaml
 SANDBOX: true
+MOCK_MODE: false      # do not make live calls
 API_VERSION: 2012_1
 
 ECID: 1234567
@@ -69,6 +70,22 @@ You can now use Netsweet live against your environment:
 > user_attrs = { external_id: '1', entity_id: 'John Doe', email: 'john.doe@example.com', first_name: 'John', last_name: 'Doe', is_person: true }
 > customer = Netsweet::Customer.create(user_attrs)
 ```
+
+## Testing
+
+Netsweet gem supports the ability to easily test by mocking out the common models. Enabling MockMode in the configuration will enable the following behavior:
+
+We recommend running most of your tests involving Netsweet in MockMode. You can run high level integration tests live against the Netsuite servers if you dare. The Netsweet gem tests should perform live calls by default.
+
+* No external NetSuite calls will be made
+* Customer and SSO models will return mocked out versions of themselves. These should respond to the same interface that the real models do.
+
+To enable mockmode:
+
+```yaml
+MOCK_MODE: true
+```
+
 
 ## Contributing
 

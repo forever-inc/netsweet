@@ -1,6 +1,7 @@
 Netsweet.configure do |config|
 
   config.sandbox     = ENV['SANDBOX']
+  config.mock_mode   = ENV['MOCK_MODE']
   config.api_version = ENV['API_VERSION']
 
   # may be a alphanumeric id

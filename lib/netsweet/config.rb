@@ -7,6 +7,7 @@ module Netsweet
       :company,
       :customer_access_role,
       :host,
+      :mock_mode,
       :partner,
       :private_key_passphrase,
       :private_key_path,
@@ -22,6 +23,10 @@ module Netsweet
     ]
 
     attr_accessor *OPTIONS
+
+    def mock_mode=(bool)
+      @mock_mode = !(bool == 'false' || bool == nil)
+    end
 
   end
 end

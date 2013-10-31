@@ -35,7 +35,7 @@ describe Netsweet::Customer do
     end
 
     describe "when customer does not exist" do
-      When(:result) { Netsweet::Customer.get("nonexistentuser") }
+      Given(:result) { Netsweet::Customer.get("nonexistentuser") }
       Then { result.should have_failed(Netsweet::CustomerNotFound) }
     end
   end
