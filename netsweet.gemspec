@@ -6,16 +6,16 @@ require 'netsweet/version'
 Gem::Specification.new do |spec|
   spec.name          = "netsweet"
   spec.version       = Netsweet::VERSION
-  spec.authors       = ["Alex Burkhart"]
+  spec.authors       = ["Alex Burkhart", 'Aaron Christy', 'David Watson']
   spec.email         = ["saterus@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = 'Sweet ruby wrapper for Netsuite E-Commerce and SSO APIs'
+  spec.summary       = 'Netsweet hides the details of the Netsuite API behind a minimal interface. Interact with RESTlets or SOAP without changing Ruby bindings.'
+  spec.homepage      = "https://github.com/forever-inc/netsweet"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.test_files    = spec.files.grep(%r{^(spec)/})
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.3"
