@@ -26,6 +26,6 @@ module Netsweet
     config.validate_configuration!
 
     require_relative '../config/revolution_prep'
-    require_relative '../spec/support/mocks.rb' if config.mock_mode
+    require_relative '../spec/mocks/mocks.rb' if config.mock_mode
   end
 end
