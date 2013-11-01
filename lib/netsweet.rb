@@ -5,6 +5,7 @@ require_relative 'netsweet/gen/soap_proxy/defaultDriver'
 
 module Netsweet
 
+  autoload :Util,               'netsweet/util.rb'
   autoload :Config,             'netsweet/config.rb'
   autoload :Connection,         'netsweet/connection.rb'
   autoload :Client,             'netsweet/client.rb'

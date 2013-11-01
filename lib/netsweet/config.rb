@@ -1,5 +1,6 @@
 module Netsweet
   class Config
+    extend Util
 
     OPTIONS = [
       :account,
@@ -22,16 +23,13 @@ module Netsweet
     ]
 
     attr_accessor *OPTIONS
+    bool_setter :sandbox, :mock_mode
 
     def validate_configuration!
       errors = OPTIONS.select do |attr|
         "Netsweet.config.#{attr}" if send(attr).nil?
       end
       raise Netsweet::ConfigurationError.new("The following configuration options are required: #{errors}") unless errors.empty?
-    end
-
-    def mock_mode=(bool)
-      @mock_mode = !(bool == 'false' || bool == nil)
     end
 
   end
