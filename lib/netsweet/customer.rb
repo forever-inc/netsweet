@@ -4,7 +4,7 @@ module Netsweet
   class Customer
 
     extend Forwardable
-    def_delegators :@rvp_customer, :external_id, :internal_id, :email, :delete, :access_role
+    def_delegators :@rvp_customer, :external_id, :internal_id, :email, :delete
 
     def initialize(revolution_prep_customer)
       @rvp_customer = revolution_prep_customer
@@ -47,6 +47,7 @@ module Netsweet
 
     def self.required_creation_fields
       @required_creation_fields ||= [
+        :access_role,
         :email,
         :entity_id,
         :external_id,

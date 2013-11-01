@@ -38,19 +38,9 @@ module Netsweet
 
     def self.create(attrs = {})
       yield attrs if block_given?
+      validate_attributes!(attrs)
 
-      rvp_customer = OpenStruct.new(
-        external_id: attrs.fetch(:external_id),
-        entity_id:   attrs.fetch(:entity_id),
-        email:       attrs.fetch(:email),
-        first_name:  attrs.fetch(:first_name),
-        last_name:   attrs.fetch(:last_name),
-        password:    attrs.fetch(:password),
-        password2:   attrs.fetch(:password),
-        access_role: Netsweet.config.customer_access_role,
-        give_access: true,
-        is_person:   attrs.fetch(:is_person)
-      )
+      rvp_customer = OpenStruct.new(attrs)
       Customer.new(rvp_customer)
     end
 
@@ -68,6 +58,18 @@ module Netsweet
     # stub me to test failures
     def self.mock_not_found
       false
+    end
+
+    # if we need to do this in more places, or more robustly, we probably should pull in Virtus.
+    def self.validate_attributes!(attrs)
+      missing_fields = required_creation_fields - attrs.keys
+      if missing_fields.empty?
+        raise ArgumentError.new("Missing required fields: #{missing_fields}")
+      end
+    end
+
+    def self.required_creation_fields
+      @required_creation_fields = ATTRS
     end
 
   end
