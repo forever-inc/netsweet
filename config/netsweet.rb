@@ -15,7 +15,6 @@ Netsweet.configure do |config|
   config.soap_username = ENV['SOAP_USERID']
   config.soap_password = URI.escape(ENV['SOAP_PASSWORD'])
   config.role          = ENV['ROLE']
-  config.customer_access_role = ENV['CUSTOMER_ACCESS_ROLE']
 
   config.host             = ENV['HOST']
   config.wsdl_url         = ENV['WSDL_HOST'] + "/wsdl/v#{config.api_version}_0/netsuite.wsdl"

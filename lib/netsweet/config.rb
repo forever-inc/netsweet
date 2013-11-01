@@ -5,7 +5,6 @@ module Netsweet
       :account,
       :api_version,
       :company,
-      :customer_access_role,
       :host,
       :mock_mode,
       :partner,
