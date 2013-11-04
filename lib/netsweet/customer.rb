@@ -20,6 +20,7 @@ module Netsweet
 
     def self.create(attrs = {})
       attrs = attrs.dup # protect netsuite from modifying these
+
       yield attrs if block_given?
       validate_attributes!(attrs)
 
@@ -41,7 +42,7 @@ module Netsweet
     # if we need to do this in more places, or more robustly, we probably should pull in Virtus.
     def self.validate_attributes!(attrs)
       missing_fields = required_creation_fields - attrs.keys
-      if missing_fields.empty?
+      unless missing_fields.empty?
         raise ArgumentError.new("Missing required fields: #{missing_fields}")
       end
     end
