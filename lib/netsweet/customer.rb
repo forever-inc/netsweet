@@ -19,6 +19,7 @@ module Netsweet
     end
 
     def self.create(attrs = {})
+      attrs = attrs.dup # protect netsuite from modifying these
       yield attrs if block_given?
       validate_attributes!(attrs)
 

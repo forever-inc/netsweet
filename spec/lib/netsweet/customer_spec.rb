@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Netsweet::Customer do
 
+  Given(:customer_attributes) { { external_id: '1', entity_id: 'Alex Burkhart', email: 'alex@neo.com', first_name: 'Alex', last_name: 'Burkhart', password: 'super_secret', password2: 'super_secret', give_access: true, access_role: '1017', is_person: true }.freeze }
   Given(:external_id) { customer_attributes[:external_id] }
-  Given(:customer_attributes) { { external_id: '1', entity_id: 'Alex Burkhart', email: 'alex@neo.com', first_name: 'Alex', last_name: 'Burkhart', password: 'super_secret', password2: 'super_secret', give_access: true, access_role: '1017', is_person: true } }
 
   before(:all)  { delete_customer(external_id) }
   after  { delete_customer(external_id) }
