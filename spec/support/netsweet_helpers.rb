@@ -3,3 +3,7 @@ def delete_customer(id)
 rescue Netsweet::CustomerNotFound
   nil #swallow
 end
+
+def new_id
+  SecureRandom.urlsafe_base64(32)
+end
