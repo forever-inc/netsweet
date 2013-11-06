@@ -4,4 +4,4 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'netsuite', git: 'git://github.com/forever-inc/netsuite'
-gem 'netsuite-rest-client', git: 'https://github.com/forever-inc/netsuite-rest-client.git'
+gem 'netsuite-rest-client', git: 'git://github.com/forever-inc/netsuite-rest-client'
