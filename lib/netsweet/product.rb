@@ -1,3 +1,5 @@
+# Encoding: utf-8
+
 module Netsweet
   class Product
 
