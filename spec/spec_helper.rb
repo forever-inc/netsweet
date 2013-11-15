@@ -1,4 +1,5 @@
 require 'pry'
+require 'securerandom'
 require 'rspec'
 require 'rspec/given'
 
