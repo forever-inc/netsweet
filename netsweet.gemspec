@@ -29,5 +29,4 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "netsuite"
   spec.add_runtime_dependency "netsuite-rest-client"
   spec.add_runtime_dependency "soap2r"
-
 end
