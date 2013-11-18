@@ -1,6 +1,7 @@
+# Encoding: utf-8
+
 module Netsweet
   class SSO
-
     def self.generate_auth_token(customer)
       @token = SecureRandom.urlsafe_base64
     end
@@ -25,6 +26,5 @@ module Netsweet
     def mock_soap_error
       false
     end
-
   end
 end

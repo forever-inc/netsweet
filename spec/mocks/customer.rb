@@ -1,8 +1,9 @@
+# Encoding: utf-8
+
 require 'ostruct'
 
 module Netsweet
   class Customer
-
     ATTRS = [
       :access_role,
       :email,
@@ -15,8 +16,7 @@ module Netsweet
       :password,
       :password2
     ]
-    attr_accessor *ATTRS
-
+    attr_accessor(*ATTRS)
 
     def initialize(struct)
       ATTRS.each do |attr|
@@ -49,8 +49,9 @@ module Netsweet
 
       Customer.new(OpenStruct.new(external_id: external_id))
 
-    rescue NetSuite::RecordNotFound => ex
-      raise Netsweet::CustomerNotFound.new("Could not find Customer with external_id = #{external_id}")
+    rescue NetSuite::RecordNotFound
+      raise Netsweet::CustomerNotFound.new("Could not find Customer
+      with external_id = #{external_id}")
     end
 
     private
@@ -60,7 +61,8 @@ module Netsweet
       false
     end
 
-    # if we need to do this in more places, or more robustly, we probably should pull in Virtus.
+    # if we need to do this in more places, or more robustly,
+    # we probably should pull in Virtus.
     def self.validate_attributes!(attrs)
       missing_fields = required_creation_fields - attrs.keys
       if missing_fields.empty?
@@ -71,6 +73,5 @@ module Netsweet
     def self.required_creation_fields
       @required_creation_fields = ATTRS
     end
-
   end
 end

@@ -5,3 +5,4 @@ gemspec
 
 gem 'netsuite', git: 'git://github.com/forever-inc/netsuite'
 gem 'netsuite-rest-client', git: 'git://github.com/forever-inc/netsuite-rest-client'
+gem 'rubocop', '0.15.0'

@@ -1,10 +1,11 @@
+# Encoding: utf-8
+
 require 'netsweet/version'
 require 'netsuite'
 require 'netsuite-rest-client'
 require_relative 'netsweet/gen/soap_proxy/defaultDriver'
 
 module Netsweet
-
   autoload :Util,               'netsweet/util.rb'
   autoload :Config,             'netsweet/config.rb'
   autoload :Connection,         'netsweet/connection.rb'

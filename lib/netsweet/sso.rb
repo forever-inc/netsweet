@@ -1,23 +1,26 @@
+# Encoding: utf-8
+
 module Netsweet
   class SSO
-
     def self.generate_auth_token(customer)
-      string_token = "#{Netsweet.config.company} #{customer.external_id} #{timestamp}"
-
+      id = customer.external_id
+      string_token = "#{Netsweet.config.company} #{id} #{timestamp}"
       encrypt_token(string_token)
     end
 
     def self.encrypt_token(token)
-      key_file.private_encrypt(token).unpack("H*")[0].upcase
+      key_file.private_encrypt(token).unpack('H*')[0].upcase
     end
 
     # soap2r provides SsoCredentials, MapSsoRequest, and NetSuitePortType
     def self.map_sso(customer, password)
       hex_token = generate_auth_token(customer)
-      # SsoCredentials.initialize(email = nil, password = nil, account = nil, role = nil, authenticationToken = nil, partnerId = nil)
-      credentials = SsoCredentials.new(customer.email, password, Netsweet.config.account, customer.access_role, hex_token, Netsweet.config.partner)
+      # SsoCredentials.initialize(email = nil, password = nil, account = nil,
+      # role = nil, authenticationToken = nil, partnerId = nil)
+      sso_credentials(customer, password, hex_token)
+
       request = MapSsoRequest.new
-      request.ssoCredentials = credentials
+      request.ssoCredentials = @credentials
       client = NetSuitePortType.new
       client.mapSso(request)
     rescue SOAP::FaultError => ex
@@ -26,14 +29,22 @@ module Netsweet
 
     private
 
+    def self.sso_credentials(customer, password, hex_token)
+      @credentials = SsoCredentials.new(customer.email, password,
+                                        Netsweet.config.account,
+                                        customer.access_role, hex_token,
+                                        Netsweet.config.partner)
+    end
+
     def self.key_file
-      @@key_file ||= OpenSSL::PKey::RSA.new(File.read(Netsweet.config.private_key_path), Netsweet.config.private_key_passphrase)
+      @key_file ||= (
+      OpenSSL::PKey::RSA.new(File.read(Netsweet.config.private_key_path),
+                             Netsweet.config.private_key_passphrase))
     end
 
     def self.timestamp
       time = Time.now
       (time.to_i * 1000) + (time.usec / 1000)
     end
-
   end
 end
