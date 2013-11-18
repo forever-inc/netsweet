@@ -37,7 +37,6 @@ module Netsweet
     end
 
     def self.key_file
-      # verify instance variable is appropriate
       @key_file ||= (
       OpenSSL::PKey::RSA.new(File.read(Netsweet.config.private_key_path),
                              Netsweet.config.private_key_passphrase))
