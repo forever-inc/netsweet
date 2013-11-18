@@ -4,7 +4,6 @@ require 'ostruct'
 
 module Netsweet
   class Customer
-
     ATTRS = [
       :access_role,
       :email,
@@ -18,7 +17,6 @@ module Netsweet
       :password2
     ]
     attr_accessor(*ATTRS)
-
 
     def initialize(struct)
       ATTRS.each do |attr|
@@ -64,7 +62,7 @@ module Netsweet
     end
 
     # if we need to do this in more places, or more robustly,
-    #we probably should pull in Virtus.
+    # we probably should pull in Virtus.
     def self.validate_attributes!(attrs)
       missing_fields = required_creation_fields - attrs.keys
       if missing_fields.empty?
@@ -75,6 +73,5 @@ module Netsweet
     def self.required_creation_fields
       @required_creation_fields = ATTRS
     end
-
   end
 end

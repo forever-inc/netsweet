@@ -1,3 +1,5 @@
+# Encoding: utf-8
+
 Netsweet.configure do |config|
 
   config.sandbox     = ENV['SANDBOX']
@@ -17,8 +19,11 @@ Netsweet.configure do |config|
   config.role          = ENV['ROLE']
 
   config.host             = ENV['HOST']
-  config.wsdl_url         = ENV['WSDL_HOST'] + "/wsdl/v#{config.api_version}_0/netsuite.wsdl"
-  config.sso_endpoint_url = ENV['WSDL_HOST'] + "/services/NetSuitePort_#{config.api_version}"
+  config.wsdl_url         = ENV['WSDL_HOST'] +
+                            "/wsdl/v#{config.api_version}_0/netsuite.wsdl"
+
+  config.sso_endpoint_url = ENV['WSDL_HOST'] +
+                            "/services/NetSuitePort_#{config.api_version}"
 
   config.private_key_path       = Pathname.new(ENV['PRIVATE_KEY_PATH'])
   config.private_key_passphrase = ENV['PRIVATE_KEY_PASSPHRASE']
