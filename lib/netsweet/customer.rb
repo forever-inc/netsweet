@@ -30,7 +30,8 @@ module Netsweet
       rvp_customer = NetSuite::Records::Customer.new(attrs)
       if rvp_customer.add
         Customer.new(rvp_customer)
-      else raise CustomerNotCreated.new("Customer could not be created. Customer: #{attrs}")
+      else raise CustomerNotCreated.new("Customer: \"#{attrs}\" could
+                                        not be created.")
       end
     end
 
