@@ -104,10 +104,3 @@ MOCK_MODE: true
     * `Netsuite::Client`
 * `SOAP4r`: Generic Netsuite SSO code. Gobs of generated Ruby code. Used for MapSSO.
     * `ForeverNetsuiteWrapper`
-
-# Questions for NetSuite (Charlie)
-
-* "system.na1.netsuite.com" vs "system.netsuite.com"
-    # TODO: total price of a membership is the sume of items 7, 9, and 10
-
-
