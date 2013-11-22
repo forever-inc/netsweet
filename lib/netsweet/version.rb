@@ -1,5 +1,5 @@
 # Encoding: utf-8
 
 module Netsweet
-  VERSION = '0.0.3'
+  VERSION = '0.0.4'
 end

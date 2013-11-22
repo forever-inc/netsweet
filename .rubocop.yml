@@ -3,10 +3,34 @@ AllCops:
     - lib/netsweet/gen/**
 
 RaiseArgs:
-  Enabled: False
+  Enabled: false
 
 SignalException:
-  Enabled: False
+  Enabled: false
 
 Documentation:
-  Enabled: False
+  Enabled: false
+
+LineLength:
+  Enabled: false
+
+MethodLength:
+  Enabled: true
+  Max: 20
+
+# Allow {} for multi-line blocks. We use {} for multi-line blocks used as functions
+MultilineBlocks:
+  Enabled: false
+
+Blocks:
+  Enabled: false
+
+# We're not gonna get picky about collect vs. map, inject vs. reduce,
+# detect vs. find, or find_all vs. select
+CollectionMethods:
+  Enabled: false
+
+# Don't force us to write unclear conditionals.
+IfUnlessModifier:
+  Enabled: false
+

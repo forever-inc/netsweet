@@ -50,8 +50,7 @@ module Netsweet
       Customer.new(OpenStruct.new(external_id: external_id))
 
     rescue NetSuite::RecordNotFound
-      raise Netsweet::CustomerNotFound.new("Could not find Customer
-      with external_id = #{external_id}")
+      raise Netsweet::CustomerNotFound.new("Could not find Customer with external_id = #{external_id}")
     end
 
     private
