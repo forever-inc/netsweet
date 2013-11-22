@@ -1,5 +1,3 @@
-# Encoding: utf-8
-
 require 'netsweet/version'
 require 'netsuite'
 require 'netsuite-rest-client'

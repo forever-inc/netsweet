@@ -1,5 +1,3 @@
-# Encoding: utf-8
-
 module Netsweet
   class Connection
     attr_reader :conn

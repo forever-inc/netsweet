@@ -1,5 +1,3 @@
-# Encoding: utf-8
-
 module Netsweet
   CustomerNotFound       = Class.new(Exception)
   MapSSOFailed           = Class.new(Exception)

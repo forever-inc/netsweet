@@ -1,5 +1,3 @@
-# Encoding: utf-8
-
 module Netsweet
   class SSO
     def self.generate_auth_token(customer)

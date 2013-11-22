@@ -1,5 +1,3 @@
-# Encoding: utf-8
-
 module Netsweet
   class Product
     attr_reader :name, :kind, :ns_type, :ns_id

@@ -11,16 +11,15 @@ SignalException:
 Documentation:
   Enabled: false
 
+Encoding:
+  Enabled: false
+
 LineLength:
   Enabled: false
 
 MethodLength:
   Enabled: true
   Max: 20
-
-# Allow {} for multi-line blocks. We use {} for multi-line blocks used as functions
-MultilineBlocks:
-  Enabled: false
 
 Blocks:
   Enabled: false

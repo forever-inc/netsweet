@@ -1,5 +1,3 @@
-# Encoding: utf-8
-
 Netsweet.configure do |config|
 
   config.sandbox     = ENV['SANDBOX']
