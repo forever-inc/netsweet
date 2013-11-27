@@ -4,4 +4,7 @@ module Netsweet
   ConfigurationError     = Class.new(Exception)
   CustomerNotCreated     = Class.new(Exception)
   CustomerEmailNotUnique = Class.new(Exception)
+  RecordNotFound         = Class.new(Exception)
+  ConnectionError        = Class.new(Exception)
+  ClientError            = Class.new(Exception)
 end

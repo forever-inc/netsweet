@@ -1,50 +1,59 @@
-require 'forwardable'
+require 'ostruct'
+require 'timeliness'
 
 module Netsweet
   class Customer
-    extend Forwardable
+    extend Translator
 
-    def_delegators :@rvp_customer, :access_role, :external_id, :internal_id, :email, :date_created, :delete
+    attr_accessor :properties
 
-    def initialize(revolution_prep_customer)
-      @rvp_customer = revolution_prep_customer
+    translate "@properties" do
+      { :firstname    => :first_name,
+        :lastname     => :last_name,
+        :id           => :internal_id,
+        :email        => :email }
     end
 
-    def gen_auth_token
-      Netsweet::SSO.generate_auth_token(self)
+    def self.connection
+      Netsweet::Client.new
     end
 
-    def map_sso(password)
-      Netsweet::SSO.map_sso(self, password)
+    def initialize(properties={})
+      @properties = ::OpenStruct.new(properties)
     end
 
-    def self.create(attrs = {})
-      yielded = {}
-      yield yielded if block_given?
-      attrs = attrs.merge(yielded)
+    # TODO: possible to move this into a proc on the translation hash?
+    def date_created
+      Timeliness.parse(properties.datecreated)
+    end
 
-      validate_attributes!(attrs)
+    # def self.get(external_id)
+    #   customer = connection.get(external_id: external_id)
+    #   Customer.new(rvp_customer)
+    # rescue NetSuite::RecordNotFound
+    #   raise Netsweet::CustomerNotFound.new("Could not find Customer with external_id = #{external_id}")
+    # end
+    #
 
-      rvp_customer = NetSuite::Records::Customer.new(attrs)
-      if rvp_customer.add
-        Customer.new(rvp_customer)
-      else raise CustomerNotCreated.new("Customer: \"#{attrs}\" could not be created.")
+    def self.find_by_internal_id(internal_id)
+      properties = connection.get_record("Customer", internal_id)
+      Customer.new(properties)
+    rescue Netsweet::RecordNotFound
+      raise Netsweet::CustomerNotFound.new("Could not find Customer with internal_id = #{internal_id}")
+    end
+
+    def self.search_by_email(email)
+      results = connection.search_records("Customer", "email", email, "contains", return_columns)
+      if results.count.zero?
+        raise Netsweet::CustomerNotFound.new("Could not find Customer with email = #{email}")
+      else
+        results.map { |properties| Customer.new(properties) }.sort_by(&:date_created)
       end
     end
 
-    def self.get(external_id)
-      rvp_customer = NetSuite::Records::Customer.get(external_id: external_id)
-      Customer.new(rvp_customer)
-    rescue NetSuite::RecordNotFound
-      raise Netsweet::CustomerNotFound.new("Could not find Customer with external_id = #{external_id}")
-    end
 
-    def self.find_by_internal_id(internal_id)
-      rvp_customer = NetSuite::Records::Customer.get(internal_id: internal_id)
-      Customer.new(rvp_customer)
-    rescue NetSuite::RecordNotFound
-      raise Netsweet::CustomerNotFound.new("Could not find Customer with internal_id = #{internal_id}")
-    end
+
+
 
     def self.find_by_email(email)
       customers = search_by_email(email)
@@ -62,14 +71,6 @@ module Netsweet
 
     private
 
-    def self.search_by_email(email)
-      results = NetSuite::Records::Customer.search(basic: [{ field: 'email', operator: 'contains', value: email }]).results
-      if results.count.zero?
-        raise Netsweet::CustomerNotFound.new("Could not find Customer with email = #{email}")
-      else
-        results.map { |rvp_customer| Customer.new(rvp_customer) }.sort_by(&:date_created)
-      end
-    end
 
     # if we need to do this in more places, or more robustly,
     # we probably should pull in Virtus.
@@ -86,6 +87,10 @@ module Netsweet
       if attrs[:password] != attrs[:password2]
         raise ArgumentError.new('Passwords must match!')
       end
+    end
+
+    def self.return_columns
+      @return_columns ||= [:email, :firstname, :lastname, :datecreated]
     end
 
     def self.required_creation_fields

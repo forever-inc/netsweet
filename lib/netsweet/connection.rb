@@ -12,7 +12,22 @@ module Netsweet
     end
 
     def get_record(type, id)
-      conn.get_record(type, id)
+      call { conn.get_record(type, id) }
     end
+
+    def search_records(type, query, return_columns=[])
+      return_columns_hash = Hash[return_columns.zip([nil])]
+      call { conn.search_records(type, query, return_columns_hash) }
+    end
+
+
+    private
+
+    def call(&blk)
+      yield blk
+    rescue => e
+      raise ConnectionError.new(e.message)
+    end
+
   end
 end

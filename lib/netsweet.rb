@@ -5,6 +5,7 @@ require_relative 'netsweet/gen/soap_proxy/defaultDriver'
 
 module Netsweet
   autoload :Util,                   'netsweet/util.rb'
+  autoload :Translator,             'netsweet/translator.rb'
   autoload :Config,                 'netsweet/config.rb'
   autoload :Connection,             'netsweet/connection.rb'
   autoload :Client,                 'netsweet/client.rb'
@@ -16,6 +17,8 @@ module Netsweet
   autoload :ConfigurationError,     'netsweet/errors.rb'
   autoload :CustomerNotCreated,     'netsweet/errors.rb'
   autoload :CustomerEmailNotUnique, 'netsweet/errors.rb'
+  autoload :ConnectionError,        'netsweet/errors.rb'
+  autoload :ClientError,            'netsweet/errors.rb'
 
   class << self
     attr_accessor :config
