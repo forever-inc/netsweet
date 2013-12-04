@@ -7,11 +7,14 @@ module Netsweet
 
     attr_accessor :properties
 
-    translate "@properties" do
-      { :firstname    => :first_name,
-        :lastname     => :last_name,
-        :id           => :internal_id,
-        :email        => :email }
+    translate :properties do
+      {
+        :first_name   => :firstname,
+        :last_name    => :lastname,
+        :internal_id  => :id,
+        :email        => :email,
+        :date_created => [:datecreated, ->(d) { Timeliness.parse(d) }]
+      }
     end
 
     def self.connection
@@ -22,10 +25,6 @@ module Netsweet
       @properties = ::OpenStruct.new(properties)
     end
 
-    # TODO: possible to move this into a proc on the translation hash?
-    def date_created
-      Timeliness.parse(properties.datecreated)
-    end
 
     # def self.get(external_id)
     #   customer = connection.get(external_id: external_id)
