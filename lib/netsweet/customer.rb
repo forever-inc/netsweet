@@ -13,6 +13,7 @@ module Netsweet
         :last_name    => :lastname,
         :internal_id  => :id,
         :email        => :email,
+        :entity_id    => :entityid,
         :date_created => [:datecreated, ->(d) { Timeliness.parse(d) }]
       }
     end
@@ -24,15 +25,6 @@ module Netsweet
     def initialize(properties={})
       @properties = ::OpenStruct.new(properties)
     end
-
-
-    # def self.get(external_id)
-    #   customer = connection.get(external_id: external_id)
-    #   Customer.new(rvp_customer)
-    # rescue NetSuite::RecordNotFound
-    #   raise Netsweet::CustomerNotFound.new("Could not find Customer with external_id = #{external_id}")
-    # end
-    #
 
     def self.find_by_internal_id(internal_id)
       properties = connection.get_record("Customer", internal_id)
@@ -50,9 +42,14 @@ module Netsweet
       end
     end
 
-
-
-
+    def self.search_by_external_id(external_id)
+      results = connection.search_records("Customer", "entityid", external_id, "is", return_columns)
+      if results.count.zero?
+        raise Netsweet::CustomerNotFound.new("Could not find Customer with external_id = #{external_id}")
+      else
+        results.map { |properties| Customer.new(properties) }.sort_by(&:date_created)
+      end
+    end
 
     def self.find_by_email(email)
       customers = search_by_email(email)
@@ -60,14 +57,21 @@ module Netsweet
         ids = customers.map(&:internal_id)
         raise Netsweet::CustomerEmailNotUnique.new("Found #{ids.count} records found with the email '#{email}' (internal IDs = #{ids})")
       end
-      Customer.find_by_internal_id(customers.first.internal_id)
+      customers.first
     end
 
-    def self.find_first_by_email(email)
-      customers = search_by_email(email)
-      Customer.find_by_internal_id(customers.first.internal_id)
+    def self.find_by_external_id(external_id)
+      customers = search_by_external_id(external_id)
+      if customers.count > 1
+        ids = customers.map(&:external_id)
+        raise Netsweet::CustomerEmailNotUnique.new("Found #{ids.count} records found with the external_id '#{external_id}' (internal IDs = #{ids})")
+      end
+      customers.first
     end
 
+    def refresh
+      Customer.find_by_internal_id(self.internal_id)
+    end
 
     private
 
@@ -87,8 +91,8 @@ module Netsweet
     end
 
     def self.return_columns
-      @return_columns ||= 
-        [:email, :firstname, :lastname, :datecreated]
+      @return_columns ||=
+        [:email, :firstname, :lastname, :datecreated, :entityid]
     end
 
     def self.required_creation_fields
