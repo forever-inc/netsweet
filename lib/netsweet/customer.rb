@@ -68,11 +68,9 @@ module Netsweet
       Customer.find_by_internal_id(customers.first.internal_id)
     end
 
+
     private
 
-
-    # if we need to do this in more places, or more robustly,
-    # we probably should pull in Virtus.
     def self.validate_attributes!(attrs)
       missing_fields = required_creation_fields - attrs.keys
       unless missing_fields.empty?
@@ -89,16 +87,13 @@ module Netsweet
     end
 
     def self.return_columns
-      @return_columns ||= [:email, :firstname, :lastname, :datecreated]
+      @return_columns ||= 
+        [:email, :firstname, :lastname, :datecreated]
     end
 
     def self.required_creation_fields
-      @required_creation_fields ||= [
-        :access_role, :email, :entity_id,
-        :external_id, :first_name, :give_access,
-        :is_person, :last_name, :password,
-        :password2
-      ]
+      @required_creation_fields ||=
+        [:access_role, :email, :entity_id, :external_id, :first_name, :give_access, :is_person, :last_name, :password, :password2]
     end
   end
 end
