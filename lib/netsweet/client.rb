@@ -35,11 +35,13 @@ module Netsweet
     end
 
     def valid?
+      return true if response.empty?
       response.is_a?(Hash) || response[0].is_a?(Hash) # yes, seriously.
     end
 
     def error
-      raise error_klass(response[0]).new(response.join(' '))
+      msg = response.empty? ? "No results returned" : response.join(' ')
+      raise error_klass(response[0]).new(msg)
     end
 
     def error_klass(code)
