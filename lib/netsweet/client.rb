@@ -12,17 +12,25 @@ module Netsweet
       end
     end
 
+    def upsert(ns_type, queries)
+      connection.upsert(ns_type, queries)
+    end
+
     def search_records(ns_type, ns_field_name, ns_field_value, ns_operator='is', return_columns)
       raise ClientError.new("A search value must be provided") if ns_field_value.blank?
 
       call do
-        query    = { "#{ns_field_name}" => { "value" => ns_field_value, "operator" => ns_operator } }
+        query    = build_query(ns_field_name, ns_field_value, ns_operator)
         response = connection.search_records(ns_type, query, return_columns)
         response.map do |properties|
           # elevate :column results to top level
           properties.merge(properties.delete(:columns))
         end
       end
+    end
+
+    def build_query(field_name, field_value, operator="is")
+      { "#{field_name}" => { "value" => field_value, "operator" => operator } }
     end
 
 

@@ -20,6 +20,10 @@ module Netsweet
       call { conn.search_records(type, query, return_columns_hash) }
     end
 
+    def upsert(type, query)
+      call { conn.upsert(type, query) }
+    end
+
 
     private
 

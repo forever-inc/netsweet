@@ -11,18 +11,29 @@ module Translator
       if simple_alias?(actual)
         # delegate method call to source using aliased name
         def_delegator source.to_sym, actual, translated
+        def_delegator source.to_sym, "#{actual}=", "#{translated}="
       else
-        # define new method executing given proc
-        actual_method_name, func = actual
-        define_method(translated) do
-          func.call(send(source).send(actual_method_name))
-        end
+        actual_method_name, get_func, set_func = actual
+        proc_getter(source, get_func, translated, actual_method_name) if get_func
+        proc_setter(source, set_func, translated, actual_method_name) if set_func
       end
     end
   end
 
   def simple_alias?(actual)
     actual.is_a?(Symbol)
+  end
+
+  def proc_getter(source, get_func, translated_method_name, actual_method_name)
+    define_method(translated_method_name) do
+      get_func.call(send(source).send(actual_method_name))
+    end
+  end
+
+  def proc_setter(source, set_func, translated_method_name, actual_method_name)
+    define_method("#{translated_method_name}=") do |val|
+      send(source).send("#{actual_method_name}=", set_func.call(val))
+    end
   end
 
 end
