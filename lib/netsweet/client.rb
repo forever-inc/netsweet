@@ -16,6 +16,12 @@ module Netsweet
       connection.upsert(ns_type, queries)
     end
 
+    def destroy(ns_type, *ids)
+      call do
+        connection.delete(ns_type, ids)
+      end
+    end
+
     def search_records(ns_type, ns_field_name, ns_field_value, ns_operator='is', return_columns)
       raise ClientError.new("A search value must be provided") if ns_field_value.blank?
 

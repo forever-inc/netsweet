@@ -20,6 +20,12 @@ module Netsweet
       call { conn.search_records(type, query, return_columns_hash) }
     end
 
+    def destroy(type, *ids)
+      call do
+        conn.delete(type, ids)
+      end
+    end
+
     def upsert(type, query)
       call { conn.upsert(type, query) }
     end
