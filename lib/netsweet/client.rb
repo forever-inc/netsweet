@@ -30,7 +30,7 @@ module Netsweet
     end
 
     def build_query(field_name, field_value, operator="is")
-      { "#{field_name}" => { "value" => field_value, "operator" => operator } }
+      { field_name.to_s => { "value" => field_value, "operator" => operator } }
     end
 
 
