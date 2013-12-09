@@ -11,16 +11,17 @@ module Netsweet
       {
         :first_name   => :firstname,
         :last_name    => :lastname,
-        :internal_id  => :id,
         :email        => :email,
+        :internal_id  => :id,
         :entity_id    => :entityid,
+        :external_id  => :entityid, # is this different than entity id on netsuite side?
         :access_role  => [:accessrole,  ->(v) { v[:internalid] }, ->(v) { { internalid: v } }],
         :date_created => [:datecreated, ->(v) { Timeliness.parse(v) }, nil],
       }
     end
 
-    def self.connection
-      Netsweet::Client.new
+    def initialize(properties={})
+      @properties = ::OpenStruct.new(properties)
     end
 
     def gen_auth_token
@@ -31,16 +32,8 @@ module Netsweet
       Netsweet::SSO.map_sso(self, password)
     end
 
-    def initialize(properties={})
-      @properties = ::OpenStruct.new(properties)
-    end
-
-    def self.build_attributes(attrs)
-      yielded = {}
-      if block_given?
-        yield yielded
-      end
-      attrs.merge!(yielded)
+    def self.connection
+      Netsweet::Client.new
     end
 
     # just in here for temporary testing
@@ -57,6 +50,14 @@ module Netsweet
         password2: 'super_secret',
         password: 'super_secret'
       }
+    end
+
+    def self.build_attributes(attrs)
+      yielded = {}
+      if block_given?
+        yield yielded
+      end
+      attrs.merge(yielded)
     end
 
     def self.build_creation_attributes(attrs = {})
@@ -97,7 +98,7 @@ module Netsweet
     end
 
     def self.search_by_external_id(external_id)
-      results = connection.search_records("Customer", "entityid", external_id, "is", return_columns)
+      results = connection.search_records("Customer", "externalid", external_id, "is", return_columns)
       if results.count.zero?
         raise Netsweet::CustomerNotFound.new("Could not find Customer with external_id = #{external_id}")
       else
@@ -127,6 +128,7 @@ module Netsweet
       Customer.find_by_internal_id(self.internal_id)
     end
 
+
     private
 
     def self.validate_creation_attributes!(attrs)
@@ -147,7 +149,7 @@ module Netsweet
 
     def self.return_columns
       @return_columns ||=
-        [:email, :firstname, :lastname, :datecreated, :entityid]
+        [:email, :firstname, :lastname, :datecreated, :entityid, :externalid]
     end
 
     def self.required_creation_fields
