@@ -51,21 +51,24 @@ module Netsweet
         email: "sample_email#{id}@example.com",
         entity_id: id,
         first_name: 'Alex',
-        give_access: 'T',
-        is_person: 'T',
+        give_access: true,
+        is_person: true,
         last_name: 'Burkhart',
         password2: 'super_secret',
         password: 'super_secret'
       }
     end
 
+    def self.build_creation_attributes(attrs = {})
+      attrs.each_with_object({}) do |(k,v), hsh|
+        hsh[key_conversion(k)] = value_conversion(v)
+      end
+    end
+
     def self.create(attrs = {}, &block)
       props = build_attributes(attrs, &block)
       validate_creation_attributes!(props)
-      # TODO: RAISE if account already exists using email
-
-      values  = props.each_with_object({}) { |(k,v), hsh| hsh[convert(k)] = v }
-      results = connection.upsert('Customer', [values])
+      results = connection.upsert('Customer', [build_creation_attributes(props)])
 
       if results.empty?
         raise CustomerNotCreated.new("Customer: \"#{props}\" could not be created.")
@@ -141,10 +144,6 @@ module Netsweet
       end
     end
 
-    def self.convert(key)
-      # convert from snake case to netsuite madness
-      key.to_s.gsub("_", "")
-    end
 
     def self.return_columns
       @return_columns ||=
@@ -154,6 +153,23 @@ module Netsweet
     def self.required_creation_fields
       @required_creation_fields ||=
         [:access_role, :email, :entity_id, :first_name, :give_access, :is_person, :last_name, :password, :password2]
+    end
+
+    def self.key_conversion(key)
+      # convert from snake case to netsuite madness
+      key.to_s.gsub("_", "")
+    end
+
+    def self.value_conversion(val)
+      # convert from booleans to netsuite truthy madness
+      case val
+      when true
+        "T"
+      when false
+        "F"
+      else
+        val
+      end
     end
   end
 end
