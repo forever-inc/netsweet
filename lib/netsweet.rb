@@ -1,7 +1,6 @@
 require 'netsweet/version'
 require 'netsuite'
 require 'netsuite-rest-client'
-require 'deep_tree'
 require_relative 'netsweet/gen/soap_proxy/defaultDriver'
 
 module Netsweet
