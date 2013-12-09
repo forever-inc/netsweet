@@ -70,7 +70,7 @@ module Netsweet
       if results.empty?
         raise CustomerNotCreated.new("Customer: \"#{props}\" could not be created.")
       elsif results.count > 1
-        raise MultipleCustomersCreated.new("Muliple Netsuite Customers were just created: #{results.map(&:first).join(", ")}")
+        raise MultipleCustomersCreated.new("Multiple Customers were just created: #{results.map(&:first).join(", ")}")
       else
         id, props = results.first
         Customer.new(props.merge(id: id)).refresh
