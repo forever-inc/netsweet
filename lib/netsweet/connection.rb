@@ -21,9 +21,7 @@ module Netsweet
     end
 
     def destroy(type, *ids)
-      call do
-        conn.delete(type, ids)
-      end
+      call { conn.delete(type, ids.flatten) }
     end
 
     def upsert(type, query)
