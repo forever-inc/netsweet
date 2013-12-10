@@ -5,17 +5,21 @@ require 'dotenv'
 require 'pry'
 
 environment = ARGV[0] || 'sandbox'
-env_path = Pathname.new(".env.#{environment}")
+config_path = Pathname.new(".env.#{environment}")
+env_path    = Pathname.new("./config/environments/#{environment}.rb")
 
-if env_path.exist?
-  Dotenv.load(env_path)
+
+if config_path.exist?
+  Dotenv.load(config_path)
 else
-  raise ArgumentError.new("Must provide a .env.#{environment} file to configure
-        Netsweet!") unless env_path.exist?
+  raise ArgumentError.new("Must provide a .env.#{environment} file to configure Netsweet!")
 end
+
 
 require 'netsweet'
 load 'config/netsweet.rb'
+
+load env_path if env_path.exist?
 
 puts "Netsweet v#{Netsweet::VERSION} loaded in #{environment} mode."
 
