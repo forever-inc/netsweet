@@ -18,7 +18,7 @@ module Netsweet
 
     def destroy(ns_type, *ids)
       call do
-        connection.delete(ns_type, ids)
+        connection.destroy(ns_type, ids)
       end
     end
 

@@ -33,7 +33,7 @@ module Netsweet
     end
 
     def destroy
-      self.class.connection.delete('Customer', internal_id)
+      self.class.connection.destroy('Customer', internal_id)
     end
 
     def self.connection
@@ -133,7 +133,6 @@ module Netsweet
         raise ArgumentError.new('Passwords must match!')
       end
     end
-
 
     def self.return_columns
       @return_columns ||=
