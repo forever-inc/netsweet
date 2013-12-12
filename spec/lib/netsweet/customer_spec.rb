@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe Netsweet::Customer do
 
-  def gen_email
-    "alex+rspec+#{Time.now.to_i}@neo.com"
-  end
-
   Given(:id) { new_id }
   Given(:customer_attributes) do
     { external_id: id,

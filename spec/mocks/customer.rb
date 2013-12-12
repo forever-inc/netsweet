@@ -16,12 +16,6 @@ module Netsweet
     ]
     attr_accessor(*ATTRS)
 
-    def initialize(struct)
-      ATTRS.each do |attr|
-        send("#{attr}=".to_sym, struct.send(attr))
-      end
-    end
-
     def gen_auth_token
       @token = SecureRandom.urlsafe_base64
     end
@@ -38,8 +32,7 @@ module Netsweet
       yield attrs if block_given?
       validate_attributes!(attrs)
 
-      rvp_customer = OpenStruct.new(attrs)
-      Customer.new(rvp_customer)
+      Customer.new(attrs)
     end
 
     def self.get(external_id)
