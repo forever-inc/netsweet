@@ -17,6 +17,7 @@ module Netsweet
   autoload :ConfigurationError,       'netsweet/errors.rb'
   autoload :CustomerNotCreated,       'netsweet/errors.rb'
   autoload :CustomerEmailNotUnique,   'netsweet/errors.rb'
+  autoload :CustomerNotUnique,        'netsweet/errors.rb'
   autoload :MultipleCustomersCreated, 'netsweet/errors.rb'
   autoload :ConnectionError,          'netsweet/errors.rb'
   autoload :ClientError,              'netsweet/errors.rb'

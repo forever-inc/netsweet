@@ -90,7 +90,7 @@ module Netsweet
 
     def self.required_creation_fields
       @required_creation_fields ||= [
-        :access_role, :email, :entity_id,
+        :access_role, :email, :external_id,
         :external_id, :first_name, :give_access,
         :is_person, :last_name, :password,
         :password2

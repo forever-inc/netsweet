@@ -1,7 +1,7 @@
 module Netsweet
   class SSO
-    def self.generate_auth_token(entity_id)
-      string_token = "#{Netsweet.config.company} #{entity_id} #{timestamp}"
+    def self.generate_auth_token(external_id)
+      string_token = "#{Netsweet.config.company} #{external_id} #{timestamp}"
       encrypt_token(string_token)
     end
 
@@ -11,7 +11,7 @@ module Netsweet
 
     # soap2r provides SsoCredentials, MapSsoRequest, and NetSuitePortType
     def self.map_sso(customer, password)
-      hex_token = generate_auth_token(customer.entity_id)
+      hex_token = generate_auth_token(customer.external_id)
       # SsoCredentials.initialize(email = nil, password = nil, account = nil,
       # role = nil, authenticationToken = nil, partnerId = nil)
       sso_credentials(customer, password, hex_token)

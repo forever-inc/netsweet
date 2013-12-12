@@ -13,7 +13,7 @@ module Netsweet
         :last_name    => :lastname,
         :email        => :email,
         :internal_id  => :id,
-        :uuid         => :custentity_cutomer_uuid,
+        :external_id  => [:externalid,  ->(v) { v[:internalid] }, ->(v) { { internalid: v } }],
         :access_role  => [:accessrole,  ->(v) { v[:internalid] }, ->(v) { { internalid: v } }],
         :date_created => [:datecreated, ->(v) { Timeliness.parse(v) }, nil],
       }
@@ -24,7 +24,7 @@ module Netsweet
     end
 
     def gen_auth_token
-      Netsweet::SSO.generate_auth_token(entity_id)
+      Netsweet::SSO.generate_auth_token(external_id)
     end
 
     def map_sso(password)
@@ -49,12 +49,7 @@ module Netsweet
 
     def self.build_creation_attributes(attrs = {})
       attrs.each_with_object({}) do |(k,v), hsh|
-        if k == :custentity_cutomer_uuid
-          # this is snakecased in netsuite right now and yes, 'customer' is misspelled
-          hsh[:custentity_cutomer_uuid] = value_conversion(v)
-        else
-          hsh[key_conversion(k)] = value_conversion(v)
-        end
+        hsh[key_conversion(k)] = value_conversion(v)
       end
     end
 
@@ -73,13 +68,6 @@ module Netsweet
       end
     end
 
-    def self.find_by_internal_id(internal_id)
-      properties = connection.get_record("Customer", internal_id)
-      Customer.new(properties)
-    rescue Netsweet::RecordNotFound
-      raise Netsweet::CustomerNotFound.new("Could not find Customer with internal_id = #{internal_id}")
-    end
-
     def self.search_by_email(email)
       results = connection.search_records("Customer", "email", email, "contains", return_columns)
       if results.count.zero?
@@ -89,11 +77,19 @@ module Netsweet
       end
     end
 
-    def self.search_by_uuid(uuid)
-      # yes, 'customer' is misspelled in netsuite
-      results = connection.search_records("Customer", "custentity_cutomer_uuid", uuid, "is", return_columns)
+    def self.search_by_internal_id(internal_id)
+      results = connection.search_records("Customer", "internalid", internal_id, "is", return_columns)
       if results.count.zero?
-        raise Netsweet::CustomerNotFound.new("Could not find Customer with uuid = #{uuid}")
+        raise Netsweet::CustomerNotFound.new("Could not find Customer with internal id = #{internal_id}")
+      else
+        results.map { |properties| Customer.new(properties) }.sort_by(&:date_created)
+      end
+    end
+
+    def self.search_by_external_id(external_id)
+      results = connection.search_records("Customer", "externalidstring", external_id, "is", return_columns)
+      if results.count.zero?
+        raise Netsweet::CustomerNotFound.new("Could not find Customer with external id = #{external_id}")
       else
         results.map { |properties| Customer.new(properties) }.sort_by(&:date_created)
       end
@@ -108,11 +104,20 @@ module Netsweet
       customers.first
     end
 
-    def self.find_by_uuid(uuid)
-      customers = search_by_uuid(uuid)
+    # do not attempt to do a LOAD action against Netsuite, you won't get the entire object back
+    def self.find_by_internal_id(internal_id)
+      customers = search_by_internal_id(internal_id)
       if customers.count > 1
-        ids = customers.map(&:uuid)
-        raise Netsweet::CustomerEmailNotUnique.new("Found #{ids.count} records found with the uuid '#{uuid}' (internal IDs = #{ids})")
+        raise Netsweet::CustomerNotUnique.new("Found #{customers.count} records found with the internal id '#{internal_id}')")
+      end
+      customers.first
+    end
+
+    def self.find_by_external_id(external_id)
+      customers = search_by_external_id(external_id)
+      if customers.count > 1
+        ids = customers.map(&:external_id)
+        raise Netsweet::CustomerEmailNotUnique.new("Found #{ids.count} records found with the external id '#{external_id}' (internal IDs = #{ids})")
       end
       customers.first
     end
@@ -141,13 +146,12 @@ module Netsweet
 
     def self.return_columns
       @return_columns ||=
-        [:email, :firstname, :lastname, :datecreated, :entityid]
+        [:email, :firstname, :lastname, :datecreated, :externalid]
     end
 
     def self.required_creation_fields
       @required_creation_fields ||=
-        # yes, 'customer' is misspelled in netsuite
-        [:access_role, :email, :first_name, :give_access, :is_person, :last_name, :password, :password2, :custentity_cutomer_uuid]
+        [:access_role, :email, :first_name, :give_access, :is_person, :last_name, :password, :password2, :external_id]
     end
 
     def self.key_conversion(key)

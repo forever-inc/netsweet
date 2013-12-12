@@ -8,7 +8,7 @@ describe Netsweet::Customer do
 
   Given(:id) { new_id }
   Given(:customer_attributes) do
-    { custentity_cutomer_uuid: id.to_s, # yes, 'customer' is misspelled in netsuite
+    { external_id: id,
       email: gen_email,
       first_name: 'Alex',
       last_name: 'Burkhart',
@@ -19,13 +19,13 @@ describe Netsweet::Customer do
       is_person: true }.freeze
   end
 
-  Given(:uuid) { customer_attributes[:custentity_cutomer_uuid] }
+  Given(:external_id) { customer_attributes[:external_id] }
 
   context '.create' do
     Given(:customer) { Netsweet::Customer.create(customer_attributes) }
     Then { expect(customer).to be_a(Netsweet::Customer) }
     And  { expect(customer.email).to eq(customer_attributes[:email]) }
-    And  { expect(customer.uuid).to eq(uuid) }
+    And  { expect(customer.external_id).to eq(external_id) }
     And  { expect(customer.internal_id).to_not be_blank }
   end
 
@@ -35,19 +35,19 @@ describe Netsweet::Customer do
     Then             { expect(result).to be_true }
   end
 
-  context '.find_by_uuid' do
+  context '.find_by_external_id' do
     describe 'when customer exists' do
       before { Netsweet::Customer.create(customer_attributes) }
 
-      Given(:new_customer) { Netsweet::Customer.find_by_uuid(uuid).refresh }
+      Given(:new_customer) { Netsweet::Customer.find_by_external_id(external_id).refresh }
       Then { expect(new_customer).to be_a(Netsweet::Customer) }
       And  { expect(new_customer.email).to eq(customer_attributes[:email]) }
-      And  { expect(new_customer.uuid).to eq(uuid) }
+      And  { expect(new_customer.external_id).to eq(external_id) }
       And  { expect(new_customer.internal_id).to_not be_blank }
     end
 
     describe 'when customer does not exist' do
-      When(:result) { Netsweet::Customer.find_by_uuid('nonexistentuser') }
+      When(:result) { Netsweet::Customer.find_by_external_id('nonexistentuser') }
       Then { result.should have_failed(Netsweet::CustomerNotFound) }
     end
   end
@@ -59,7 +59,7 @@ describe Netsweet::Customer do
       Given(:new_customer) { Netsweet::Customer.find_by_internal_id(internal_id).refresh }
       Then { expect(new_customer).to be_a(Netsweet::Customer) }
       And  { expect(new_customer.email).to eq(customer_attributes[:email]) }
-      And  { expect(new_customer.uuid).to eq(uuid) }
+      And  { expect(new_customer.external_id).to eq(external_id) }
       And  { expect(new_customer.internal_id).to_not be_blank }
     end
 
@@ -76,13 +76,13 @@ describe Netsweet::Customer do
       Given(:new_customer) { Netsweet::Customer.find_by_email(customer.email).refresh }
       Then { expect(new_customer).to be_a(Netsweet::Customer) }
       And  { expect(new_customer.email).to eq(customer_attributes[:email]) }
-      And  { expect(new_customer.uuid).to eq(uuid) }
+      And  { expect(new_customer.external_id).to eq(external_id) }
       And  { expect(new_customer.internal_id).to_not be_blank }
     end
 
     describe 'when multiple customers exists' do
       Given(:duplicate_customer) do
-        Netsweet::Customer.create(customer_attributes.merge(email: customer.email, entity_id: new_id, custentity_cutomer_id: new_id))
+        Netsweet::Customer.create(customer_attributes.merge(email: customer.email, external_id: new_id, custentity_cutomer_id: new_id))
       end
       When(:result) { Netsweet::Customer.find_by_email(duplicate_customer.email) }
       Then { result.should have_failed(Netsweet::CustomerEmailNotUnique) }

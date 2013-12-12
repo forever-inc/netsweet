@@ -67,7 +67,7 @@ Netsweet v0.0.1 loaded in production mode.
 You can now use Netsweet live against your environment:
 
 ```ruby
-> user_attrs = { external_id: '1', entity_id: 'John Doe', email: 'john.doe@example.com', first_name: 'John', last_name: 'Doe', is_person: true }
+> user_attrs = { external_id: '1', email: 'john.doe@example.com', first_name: 'John', last_name: 'Doe', is_person: true }
 > customer = Netsweet::Customer.create(user_attrs)
 ```
 
