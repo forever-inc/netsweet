@@ -24,6 +24,10 @@ module Netsweet
       @properties = ::OpenStruct.new(properties)
     end
 
+    def refresh
+      Customer.find_by_internal_id(internal_id)
+    end
+
     def gen_auth_token
       Netsweet::SSO.generate_auth_token(external_id)
     end
@@ -38,20 +42,6 @@ module Netsweet
 
     def self.connection
       Netsweet::Client.new
-    end
-
-    def self.build_attributes(attrs)
-      yielded = {}
-      if block_given?
-        yield yielded
-      end
-      attrs.merge(yielded)
-    end
-
-    def self.build_creation_attributes(attrs = {})
-      attrs.each_with_object({}) do |(k, v), hsh|
-        hsh[key_conversion(k)] = value_conversion(v)
-      end
     end
 
     def self.create(attrs = {}, &block)
@@ -70,65 +60,53 @@ module Netsweet
     end
 
     def self.search_by_email(email)
-      results = connection.search_records("Customer", "email", email, "contains", return_columns)
-      if results.count.zero?
-        raise Netsweet::CustomerNotFound.new("Could not find Customer with email = #{email}")
-      else
-        results.map { |properties| Customer.new(properties) }.sort_by(&:date_created)
-      end
+      search("email", email, "contains")
     end
 
     def self.search_by_internal_id(internal_id)
-      results = connection.search_records("Customer", "internalid", internal_id, "is", return_columns)
-      if results.count.zero?
-        raise Netsweet::CustomerNotFound.new("Could not find Customer with internal id = #{internal_id}")
-      else
-        results.map { |properties| Customer.new(properties) }.sort_by(&:date_created)
-      end
+      search("internalid", internal_id, "is")
     end
 
     def self.search_by_external_id(external_id)
-      results = connection.search_records("Customer", "externalidstring", external_id, "is", return_columns)
-      if results.count.zero?
-        raise Netsweet::CustomerNotFound.new("Could not find Customer with external id = #{external_id}")
-      else
-        results.map { |properties| Customer.new(properties) }.sort_by(&:date_created)
-      end
-    end
-
-    def self.find_by_email(email)
-      customers = search_by_email(email)
-      if customers.count > 1
-        ids = customers.map(&:internal_id)
-        raise Netsweet::CustomerEmailNotUnique.new("Found #{ids.count} records found with the email '#{email}' (internal IDs = #{ids})")
-      end
-      customers.first
-    end
-
-    # do not attempt to do a LOAD action against Netsuite, you won't get the entire object back
-    def self.find_by_internal_id(internal_id)
-      customers = search_by_internal_id(internal_id)
-      if customers.count > 1
-        raise Netsweet::CustomerNotUnique.new("Found #{customers.count} records found with the internal id '#{internal_id}')")
-      end
-      customers.first
-    end
-
-    def self.find_by_external_id(external_id)
-      customers = search_by_external_id(external_id)
-      if customers.count > 1
-        ids = customers.map(&:external_id)
-        raise Netsweet::CustomerEmailNotUnique.new("Found #{ids.count} records found with the external id '#{external_id}' (internal IDs = #{ids})")
-      end
-      customers.first
-    end
-
-    def refresh
-      Customer.find_by_internal_id(internal_id)
+      search("externalidstring", external_id, "is")
     end
 
 
     private
+
+    def self.method_missing(meth, *args, &block)
+      if meth.to_s =~ /^find_by_(.+)$/
+        send(:find, $1, *args, &block)
+      else
+        super
+      end
+    end
+
+    def self.respond_to?(meth)
+      if meth.to_s =~ /^find_by_.*$/
+        true
+      else
+        super
+      end
+    end
+
+    def self.find(field, value)
+      customers = send("search_by_#{field}", value)
+      if customers.count > 1
+        ids = customers.map(&field.to_sym)
+        raise Netsweet::CustomerNotUnique.new("Found #{ids.count} records found with the field id '#{field}' (internal IDs = #{ids})")
+      end
+      customers.first
+    end
+
+    def self.search(field, value, operator="is")
+      results = connection.search_records("Customer", field, value, operator, return_columns)
+      if results.count.zero?
+        raise Netsweet::CustomerNotFound.new("Could not find Customer with query:  #{field} '#{operator}' #{value}")
+      else
+        results.map { |properties| Customer.new(properties) }.sort_by(&:date_created)
+      end
+    end
 
     def self.validate_creation_attributes!(attrs)
       missing_fields = required_creation_fields - attrs.keys
@@ -153,6 +131,20 @@ module Netsweet
     def self.required_creation_fields
       @required_creation_fields ||=
         [:access_role, :email, :first_name, :give_access, :is_person, :last_name, :password, :password2, :external_id]
+    end
+
+    def self.build_attributes(attrs)
+      yielded = {}
+      if block_given?
+        yield yielded
+      end
+      attrs.merge(yielded)
+    end
+
+    def self.build_creation_attributes(attrs = {})
+      attrs.each_with_object({}) do |(k, v), hsh|
+        hsh[key_conversion(k)] = value_conversion(v)
+      end
     end
 
     def self.key_conversion(key)

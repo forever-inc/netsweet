@@ -3,7 +3,6 @@ module Netsweet
   MapSSOFailed             = Class.new(Exception)
   ConfigurationError       = Class.new(Exception)
   CustomerNotCreated       = Class.new(Exception)
-  CustomerEmailNotUnique   = Class.new(Exception)
   CustomerNotUnique        = Class.new(Exception)
   MultipleCustomersCreated = Class.new(Exception)
   RecordNotFound           = Class.new(Exception)

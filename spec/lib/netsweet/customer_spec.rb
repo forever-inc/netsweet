@@ -83,7 +83,7 @@ describe Netsweet::Customer do
         Netsweet::Customer.create(customer_attributes.merge(email: customer.email, external_id: new_id, custentity_cutomer_id: new_id))
       end
       When(:result) { Netsweet::Customer.find_by_email(duplicate_customer.email) }
-      Then { result.should have_failed(Netsweet::CustomerEmailNotUnique) }
+      Then { result.should have_failed(Netsweet::CustomerNotUnique) }
     end
 
     describe 'when customer does not exist' do
