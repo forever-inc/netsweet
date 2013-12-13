@@ -26,7 +26,7 @@ module Translator
 
   def proc_getter(source, get_func, translated_method_name, actual_method_name)
     define_method(translated_method_name) do
-      get_func.call(send(source).send(actual_method_name))
+      get_func.call(send(source).send(actual_method_name) || {})
     end
   end
 
