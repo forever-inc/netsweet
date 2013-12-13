@@ -13,7 +13,9 @@ module Netsweet
     end
 
     def upsert(ns_type, queries)
-      connection.upsert(ns_type, queries)
+      call do
+        connection.upsert(ns_type, queries)
+      end
     end
 
     def destroy(ns_type, ids)
@@ -54,7 +56,9 @@ module Netsweet
 
     def valid?
       return true if response.empty?
-      response.is_a?(Hash) || response[0].is_a?(Hash) # yes, seriously.
+      return true if response.flatten[0].is_a?(Hash)
+      return true if response.flatten[0].to_i != 0 # first element is numeric internal id
+      false
     end
 
     def error
