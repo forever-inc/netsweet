@@ -15,6 +15,7 @@ module Netsweet
         :internal_id  => :id,
         :external_id  => [:externalid,  ->(v) { v[:internalid] }, ->(v) { { internalid: v } }],
         :access_role  => [:accessrole,  ->(v) { v[:internalid] }, ->(v) { { internalid: v } }],
+        :tax_item     => [:taxitem,     ->(v) { v[:name] },       ->(v) { { name: v } }],
         :date_created => [:datecreated, ->(v) { Timeliness.parse(v) }, nil],
       }
     end
@@ -146,7 +147,7 @@ module Netsweet
 
     def self.return_columns
       @return_columns ||=
-        [:email, :firstname, :lastname, :datecreated, :externalid]
+        [:email, :firstname, :lastname, :datecreated, :externalid, :taxitem]
     end
 
     def self.required_creation_fields

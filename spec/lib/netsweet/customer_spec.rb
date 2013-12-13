@@ -12,6 +12,8 @@ describe Netsweet::Customer do
       password2: 'super_secret',
       give_access: true,
       access_role: '1017',
+      taxable: true,
+      tax_item_string: 'AVATAX',
       is_person: true }.freeze
   end
 
