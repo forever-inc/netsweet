@@ -1,8 +1,8 @@
 module Netsweet
   class Customer
     def self.sample_attributes
-      id = rand(10000)
-      props = {
+      id = rand(10_000)
+      {
         external_id: "abc#{id}",
         access_role: '1017',
         email: "sample_email#{id}@example.com",

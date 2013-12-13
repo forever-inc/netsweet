@@ -19,10 +19,10 @@ module Netsweet
     def destroy(ns_type, ids)
       results      = connection.destroy(ns_type, ids)
       result_pairs = results.each_slice(2).to_a
-      if result_pairs.all?{ |value, result_code| result_code == false }
+      if result_pairs.all? { |value, result_code| result_code == false }
         true # in the netsuite world, false means successful
       else
-        raise ClientError.new("The following #{ns_type} could not be destroyed: #{result_pairs.map{ |r| r[0] unless r[1] == false }}")
+        raise ClientError.new("The following #{ns_type} could not be destroyed: #{result_pairs.map { |r| r[0] unless r[1] == false }}")
       end
     end
 

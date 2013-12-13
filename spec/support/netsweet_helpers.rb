@@ -11,4 +11,3 @@ end
 def gen_email
   "alex+rspec+#{Time.now.to_i}@neo.com"
 end
-

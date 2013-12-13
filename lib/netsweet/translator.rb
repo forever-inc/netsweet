@@ -1,7 +1,6 @@
 require 'forwardable'
 
 module Translator
-
   include Forwardable
 
   def translate(source, &block)
@@ -35,5 +34,4 @@ module Translator
       send(source).send("#{actual_method_name}=", set_func.call(val))
     end
   end
-
 end

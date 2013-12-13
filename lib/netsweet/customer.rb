@@ -9,14 +9,14 @@ module Netsweet
 
     translate :properties do
       {
-        :first_name   => :firstname,
-        :last_name    => :lastname,
-        :email        => :email,
-        :internal_id  => :id,
-        :external_id  => [:externalid,  ->(v) { v[:internalid] }, ->(v) { { internalid: v } }],
-        :access_role  => [:accessrole,  ->(v) { v[:internalid] }, ->(v) { { internalid: v } }],
-        :tax_item     => [:taxitem,     ->(v) { v[:name] },       ->(v) { { name: v } }],
-        :date_created => [:datecreated, ->(v) { Timeliness.parse(v) }, nil],
+        first_name:   :firstname,
+        last_name:    :lastname,
+        email:        :email,
+        internal_id:  :id,
+        external_id:  [:externalid,  ->(v) { v[:internalid] }, ->(v) { { internalid: v } }],
+        access_role:  [:accessrole,  ->(v) { v[:internalid] }, ->(v) { { internalid: v } }],
+        tax_item:     [:taxitem,     ->(v) { v[:name] },       ->(v) { { name: v } }],
+        date_created: [:datecreated, ->(v) { Timeliness.parse(v) }, nil],
       }
     end
 
@@ -49,7 +49,7 @@ module Netsweet
     end
 
     def self.build_creation_attributes(attrs = {})
-      attrs.each_with_object({}) do |(k,v), hsh|
+      attrs.each_with_object({}) do |(k, v), hsh|
         hsh[key_conversion(k)] = value_conversion(v)
       end
     end
@@ -124,7 +124,7 @@ module Netsweet
     end
 
     def refresh
-      Customer.find_by_internal_id(self.internal_id)
+      Customer.find_by_internal_id(internal_id)
     end
 
 

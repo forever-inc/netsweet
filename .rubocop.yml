@@ -21,7 +21,22 @@ MethodLength:
   Enabled: true
   Max: 20
 
+SpaceAroundEqualsInParameterDefault:
+  Enabled: false
+
+NumericLiterals:
+  Enabled: false
+
+EmptyLines:
+  Enabled: false
+
 Blocks:
+  Enabled: false
+
+StringLiterals:
+  Enabled: false
+
+ClassLength:
   Enabled: false
 
 # We're not gonna get picky about collect vs. map, inject vs. reduce,

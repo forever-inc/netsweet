@@ -36,6 +36,5 @@ module Netsweet
     rescue => e
       raise ConnectionError.new(e.message)
     end
-
   end
 end
