@@ -58,7 +58,6 @@ module Netsweet
       return true if response.empty?
       return true if response.flatten[0].is_a?(Hash)
       return true if response.flatten[0].to_i != 0 # first element is numeric internal id
-      false
     end
 
     def error
