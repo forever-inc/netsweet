@@ -1,5 +1,28 @@
 require 'forwardable'
 
+# Translate NetSuite fields returned to/from ruby object methods
+#
+# ==== Usage
+# * called as a block where the source is the hash returned from NetSuite
+#
+# * simple: translate ruby field name to netsuite field name
+#
+#    translate :source do
+#      {
+#        my_accessor_name:   :netsuite_accessor_name
+#      }
+#    end
+#
+#
+# * advanced: translate ruby field name to netsuite field name,
+#             custom getter function,
+#             custom setter function
+#
+#    translate :source do
+#      {
+#        my_accessor_name:  [:netsuite_accessor_name,  ->(v) { # additional get logic }, ->(v) { { # additional set logic } }],
+#      }
+#    end
 module Translator
   include Forwardable
 

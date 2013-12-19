@@ -7,6 +7,7 @@ module Netsweet
 
     attr_accessor :properties
 
+    # translate ruby properties to/from NetSuite properties
     translate :properties do
       {
         first_name:   :firstname,
