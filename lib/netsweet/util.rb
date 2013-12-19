@@ -1,5 +1,3 @@
-# Encoding: utf-8
-
 module Netsweet
   module Util
     def bool_setter(*attrs)

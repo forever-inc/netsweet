@@ -1,4 +1,3 @@
-# Encoding: utf-8
 # RevolutionPrep Gem Configuration
 
 NetSuite.configure do

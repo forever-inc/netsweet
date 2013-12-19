@@ -1,5 +1,3 @@
-# Encoding: utf-8
-
 require 'pry'
 require 'securerandom'
 require 'rspec'

@@ -1,5 +1,3 @@
-# Encoding: utf-8
-
 require 'ostruct'
 
 module Netsweet
@@ -18,12 +16,6 @@ module Netsweet
     ]
     attr_accessor(*ATTRS)
 
-    def initialize(struct)
-      ATTRS.each do |attr|
-        send("#{attr}=".to_sym, struct.send(attr))
-      end
-    end
-
     def gen_auth_token
       @token = SecureRandom.urlsafe_base64
     end
@@ -40,8 +32,7 @@ module Netsweet
       yield attrs if block_given?
       validate_attributes!(attrs)
 
-      rvp_customer = OpenStruct.new(attrs)
-      Customer.new(rvp_customer)
+      Customer.new(attrs)
     end
 
     def self.get(external_id)
@@ -50,8 +41,7 @@ module Netsweet
       Customer.new(OpenStruct.new(external_id: external_id))
 
     rescue NetSuite::RecordNotFound
-      raise Netsweet::CustomerNotFound.new("Could not find Customer
-      with external_id = #{external_id}")
+      raise Netsweet::CustomerNotFound.new("Could not find Customer with external_id = #{external_id}")
     end
 
     private
