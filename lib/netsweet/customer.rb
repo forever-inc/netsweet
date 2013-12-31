@@ -76,8 +76,8 @@ module Netsweet
     private
 
     def self.method_missing(meth, *args, &block)
-      if meth.to_s =~ /^find_by_(.+)$/
-        send(:find, $1, *args, &block)
+      if meth.to_s =~ /^find_by_(?<attribute>.+)$/
+        send(:find, Regexp.last_match[:attribute], *args, &block)
       else
         super
       end
