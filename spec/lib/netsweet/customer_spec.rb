@@ -46,7 +46,7 @@ describe Netsweet::Customer do
 
     describe 'when customer does not exist' do
       When(:result) { Netsweet::Customer.find_by_external_id('nonexistentuser') }
-      Then { result.should have_failed(Netsweet::CustomerNotFound) }
+      Then { expect(result).to have_failed(Netsweet::CustomerNotFound) }
     end
   end
 
@@ -63,7 +63,7 @@ describe Netsweet::Customer do
 
     describe 'when customer does not exist' do
       When(:result) { Netsweet::Customer.find_by_internal_id(12345) }
-      Then { result.should have_failed(Netsweet::CustomerNotFound) }
+      Then { expect(result).to have_failed(Netsweet::CustomerNotFound) }
     end
   end
 
@@ -83,12 +83,12 @@ describe Netsweet::Customer do
         Netsweet::Customer.create(customer_attributes.merge(email: customer.email, external_id: new_id, custentity_cutomer_id: new_id))
       end
       When(:result) { Netsweet::Customer.find_by_email(duplicate_customer.email) }
-      Then { result.should have_failed(Netsweet::CustomerNotUnique) }
+      Then { expect(result).to have_failed(Netsweet::CustomerNotUnique) }
     end
 
     describe 'when customer does not exist' do
       When(:result) { Netsweet::Customer.find_by_email('nonexistentuser') }
-      Then { result.should have_failed(Netsweet::CustomerNotFound) }
+      Then { expect(result).to have_failed(Netsweet::CustomerNotFound) }
     end
   end
 end
