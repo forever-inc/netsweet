@@ -21,7 +21,7 @@ describe Netsweet::SSO do
     Given(:sso) do
       Netsweet::SSO.map_sso(customer, customer_attributes[:password])
     end
-    Then { sso.should_not have_failed(Netsweet::MapSSOFailed) }
+    Then { expect(sso).to_not have_failed(Netsweet::MapSSOFailed) }
   end
 
 end
