@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
   spec.add_development_dependency "dotenv"
 
-  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rspec", "~> 3.0.0"
   spec.add_development_dependency "rspec-given"
   spec.add_development_dependency "rubocop", "0.23.0"
 
