@@ -20,7 +20,7 @@ module Netsweet
       @token = SecureRandom.urlsafe_base64
     end
 
-    def map_sso(password)
+    def map_sso(_password)
       @mapped = true
     end
 

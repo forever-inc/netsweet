@@ -51,3 +51,7 @@ IfUnlessModifier:
 # Prefer trailing commas in multiline forms to avoid muddied diffs
 TrailingComma: # Avoid comma after the last {parameter of a method call, item of a hash}.
   EnforcedStyleForMultiline: comma
+
+# Prefer %r{pathname/} to /pathname\//
+RegexpLiteral:
+  MaxSlashes: 0
