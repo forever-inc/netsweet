@@ -1,6 +1,6 @@
 AllCops:
-  Excludes:
-    - lib/netsweet/gen/**
+  Exclude:
+    - lib/netsweet/gen/**/*
 
 RaiseArgs:
   Enabled: false
