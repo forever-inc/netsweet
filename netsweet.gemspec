@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "rspec-given"
-  spec.add_development_dependency "rubocop", "0.15.0"
+  spec.add_development_dependency "rubocop", "0.23.0"
 
   spec.add_runtime_dependency "netsuite", "~> 0.2.0"
   spec.add_runtime_dependency "netsuite-rest-client"
