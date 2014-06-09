@@ -6,7 +6,7 @@ end
 
 RSpec::Given::HaveFailed::HaveFailedMatcher.class_eval do
   def wrapped(given)
-    given.is_a?(::Given::Failure) ? -> { given.call } : -> { }
+    given.is_a?(::Given::Failure) ? -> { given.call } : -> {}
   end
 
   def matches?(given_proc, negative_expectation = false)
