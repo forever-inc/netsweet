@@ -30,7 +30,7 @@ describe Netsweet::Customer do
   context '#destroy' do
     Given(:customer) { Netsweet::Customer.create(customer_attributes) }
     When(:result)    { customer.destroy }
-    Then             { expect(result).to be_true }
+    Then             { expect(result).to be_truthy }
   end
 
   context '.find_by_external_id' do

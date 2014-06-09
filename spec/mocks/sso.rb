@@ -1,6 +1,6 @@
 module Netsweet
   class SSO
-    def self.generate_auth_token(customer)
+    def self.generate_auth_token(_customer)
       @token = SecureRandom.urlsafe_base64
     end
 
@@ -9,7 +9,7 @@ module Netsweet
     end
 
     # soap2r provides SsoCredentials, MapSsoRequest, and NetSuitePortType
-    def self.map_sso(customer, password)
+    def self.map_sso(_customer, _password)
       raise SOAP::FaultError if mock_soap_error
 
       @mapped = true

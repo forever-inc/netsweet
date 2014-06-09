@@ -24,8 +24,6 @@ module Netsweet
       raise Netsweet::MapSSOFailed.new(ex.message)
     end
 
-    private
-
     def self.sso_credentials(customer, password, hex_token)
       @credentials = SsoCredentials.new(customer.email, password,
                                         Netsweet.config.account,

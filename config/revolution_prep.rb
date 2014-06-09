@@ -4,11 +4,11 @@ NetSuite.configure do
   reset!
 
   api_version Netsweet.config.api_version
-  wsdl        Netsweet.config.wsdl_url
-  account     Netsweet.config.account
-  email       Netsweet.config.soap_username
-  password    Netsweet.config.soap_password
-  role        Netsweet.config.role
+  wsdl Netsweet.config.wsdl_url
+  account Netsweet.config.account
+  email Netsweet.config.soap_username
+  password Netsweet.config.soap_password
+  role Netsweet.config.role
 
   # or specify the sandbox flag if you don't want to deal with
   # specifying a full URL

@@ -11,7 +11,7 @@ module Netsweet
         give_access: true,
         is_person: true,
         password2: 'super_secret',
-        password: 'super_secret'
+        password: 'super_secret',
       }
     end
   end

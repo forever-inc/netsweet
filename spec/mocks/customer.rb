@@ -12,7 +12,7 @@ module Netsweet
       :is_person,
       :last_name,
       :password,
-      :password2
+      :password2,
     ]
     attr_accessor(*ATTRS)
 
@@ -20,7 +20,7 @@ module Netsweet
       @token = SecureRandom.urlsafe_base64
     end
 
-    def map_sso(password)
+    def map_sso(_password)
       @mapped = true
     end
 
@@ -43,8 +43,6 @@ module Netsweet
     rescue NetSuite::RecordNotFound
       raise Netsweet::CustomerNotFound.new("Could not find Customer with external_id = #{external_id}")
     end
-
-    private
 
     # stub me to test failures
     def self.mock_not_found

@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/forever-inc/netsweet"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files`.split($/)
+  spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(spec)/})
   spec.require_paths = ["lib"]
@@ -22,10 +22,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
   spec.add_development_dependency "dotenv"
 
-  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rspec", "~> 3.0.0"
   spec.add_development_dependency "rspec-given"
+  spec.add_development_dependency "rubocop", "0.23.0"
 
-  spec.add_runtime_dependency "netsuite"
+  spec.add_runtime_dependency "netsuite", "~> 0.2.0"
   spec.add_runtime_dependency "netsuite-rest-client"
   spec.add_runtime_dependency "soap2r"
+  spec.add_runtime_dependency "timeliness"
 end
