@@ -44,8 +44,6 @@ module Netsweet
       raise Netsweet::CustomerNotFound.new("Could not find Customer with external_id = #{external_id}")
     end
 
-    private
-
     # stub me to test failures
     def self.mock_not_found
       false

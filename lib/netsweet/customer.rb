@@ -72,9 +72,6 @@ module Netsweet
       search("externalidstring", external_id, "is")
     end
 
-
-    private
-
     def self.method_missing(meth, *args, &block)
       if meth.to_s =~ /^find_by_(?<attribute>.+)$/
         send(:find, Regexp.last_match[:attribute], *args, &block)
