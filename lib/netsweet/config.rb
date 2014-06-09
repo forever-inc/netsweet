@@ -19,7 +19,7 @@ module Netsweet
       :soap_password,
       :soap_username,
       :sso_endpoint_url,
-      :wsdl_url
+      :wsdl_url,
     ]
 
     attr_accessor(*OPTIONS)
@@ -29,8 +29,11 @@ module Netsweet
       errors = OPTIONS.select do |attr|
         "Netsweet.config.#{attr}" if send(attr).nil?
       end
-      raise Netsweet::ConfigurationError.new("The following configuration
-            options are required: #{errors}") unless errors.empty?
+
+      return if errors.empty?
+
+      message = "The following configuration options are required: #{errors}"
+      raise Netsweet::ConfigurationError, message
     end
   end
 end

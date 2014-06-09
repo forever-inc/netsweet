@@ -12,7 +12,7 @@ module Netsweet
       :is_person,
       :last_name,
       :password,
-      :password2
+      :password2,
     ]
     attr_accessor(*ATTRS)
 
